@@ -1,0 +1,40 @@
+{
+    "name": "ellipse/providers-http",
+    "type": "library",
+    "description": "Provider package for ellipse http kernel",
+    "keywords": [
+        "psr-11",
+        "container",
+        "service-provider"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/ellipsephp/providers-http",
+    "support": {
+        "issues": "https://github.com/ellipsephp/providers-http/issues",
+        "source": "https://github.com/ellipsephp/providers-http"
+    },
+    "authors": [
+        {
+            "name": "pmall",
+            "email": "pierre.mallinjoud@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "container-interop/service-provider": "^0.4.0",
+        "psr/http-server-handler": "^1.0",
+        "ellipse/providers": "^0.2",
+        "ellipse/http": "^0.2",
+        "ellipse/dispatcher": "^1.2"
+    },
+    "require-dev": {
+        "kahlan/kahlan": "^4.0",
+        "eloquent/phony-kahlan": "^1.0",
+        "ellipse/container": "^0.4.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ellipse\\Http\\": "src"
+        }
+    }
+}
