@@ -1,6 +1,6 @@
 {
     "name": "ellipse/providers-http",
-    "type": "library",
+    "type": "service-provider",
     "description": "Provider package for ellipse http kernel",
     "keywords": [
         "psr-11",
@@ -25,6 +25,7 @@
         "psr/container": "^1.0",
         "psr/http-server-handler": "^1.0",
         "ellipse/providers": "^0.2",
+        "ellipse/providers-installer": "^0.3",
         "ellipse/http": "^0.2",
         "ellipse/dispatcher": "^1.2"
     },
