@@ -25,7 +25,7 @@ return [
 
             return $handler;
 
-        }
+        },
 
     ]),
 ];
