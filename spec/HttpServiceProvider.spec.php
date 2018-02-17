@@ -1,5 +1,7 @@
 <?php
 
+use Interop\Container\ServiceProviderInterface;
+
 use Ellipse\Container;
 use Ellipse\Dispatcher;
 use Ellipse\Http\HttpServiceProvider;
@@ -10,6 +12,12 @@ describe('HttpServiceProvider', function () {
     beforeEach(function () {
 
         $this->provider = new HttpServiceProvider;
+
+    });
+
+    it('should implement ServiceProviderInterface', function () {
+
+        expect($this->provider)->toBeAnInstanceOf(ServiceProviderInterface::class);
 
     });
 
