@@ -26,7 +26,7 @@
         "psr/http-server-handler": "^1.0",
         "ellipse/providers": "^0.2",
         "ellipse/providers-installer": "^0.3",
-        "ellipse/http": "^0.2",
+        "ellipse/http": "^0.3",
         "ellipse/dispatcher": "^1.2"
     },
     "require-dev": {
