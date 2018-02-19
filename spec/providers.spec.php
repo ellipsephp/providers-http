@@ -1,9 +1,8 @@
 <?php
 
 use Ellipse\Container;
-use Ellipse\Dispatcher;
-use Ellipse\DispatcherFactory;
-use Ellipse\DispatcherFactoryInterface;
+use Ellipse\Http\HttpKernelFactory;
+use Ellipse\Http\DefaultHttpKernelFactory;
 use Ellipse\Http\Handlers\DefaultRequestHandler;
 
 describe('providers.php', function () {
@@ -22,11 +21,11 @@ describe('providers.php', function () {
 
         });
 
-        it('should provide an instance of Dispatcher for the ellipse.http.kernel alias', function () {
+        it('should provide an instance of DefaultHttpKernelFactory for the HttpKernelFactory::class alias', function () {
 
-            $test = $this->container->get('ellipse.http.kernel');
+            $test = $this->container->get(HttpKernelFactory::class);
 
-            expect($test)->toBeAnInstanceOf(Dispatcher::class);
+            expect($test)->toBeAnInstanceOf(DefaultHttpKernelFactory::class);
 
         });
 

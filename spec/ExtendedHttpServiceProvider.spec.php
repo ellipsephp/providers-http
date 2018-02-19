@@ -5,10 +5,11 @@ use function Eloquent\Phony\Kahlan\mock;
 use Psr\Http\Server\RequestHandlerInterface;
 
 use Ellipse\Container;
-use Ellipse\Dispatcher;
-use Ellipse\Providers\ExtendedServiceProvider;
 use Ellipse\Http\ExtendedHttpServiceProvider;
+use Ellipse\Http\HttpKernelFactory;
+use Ellipse\Http\DefaultHttpKernelFactory;
 use Ellipse\Http\Handlers\DefaultRequestHandler;
+use Ellipse\Providers\ExtendedServiceProvider;
 
 describe('ExtendedHttpServiceProvider', function () {
 
@@ -32,11 +33,11 @@ describe('ExtendedHttpServiceProvider', function () {
 
         });
 
-        it('should provide an instance of Dispatcher for the ellipse.http.kernel alias', function () {
+        it('should provide an instance of DefaultHttpKernelFactory for the HttpKernelFactory::class alias', function () {
 
-            $test = $this->container->get('ellipse.http.kernel');
+            $test = $this->container->get(HttpKernelFactory::class);
 
-            expect($test)->toBeAnInstanceOf(Dispatcher::class);
+            expect($test)->toBeAnInstanceOf(DefaultHttpKernelFactory::class);
 
         });
 

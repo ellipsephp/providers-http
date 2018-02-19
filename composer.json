@@ -24,15 +24,18 @@
         "container-interop/service-provider": "^0.4.0",
         "psr/container": "^1.0",
         "psr/http-server-handler": "^1.0",
+        "zendframework/zend-diactoros": "^1.6",
+        "willdurand/negotiation": "^2.3",
+        "league/plates": "^3.3",
         "ellipse/providers": "^0.2",
         "ellipse/providers-installer": "^0.3",
-        "ellipse/http": "^0.3",
+        "ellipse/http": "^0.5",
         "ellipse/dispatcher": "^1.2"
     },
     "require-dev": {
         "kahlan/kahlan": "^4.0",
         "eloquent/phony-kahlan": "^1.0",
-        "ellipse/container": "^0.4.6"
+        "ellipse/container": "^0.4"
     },
     "autoload": {
         "psr-4": {
