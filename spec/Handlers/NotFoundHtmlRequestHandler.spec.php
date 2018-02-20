@@ -5,13 +5,15 @@ use function Eloquent\Phony\Kahlan\mock;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+use Zend\Diactoros\Response;
+
 use Ellipse\Http\Handlers\NotFoundHtmlRequestHandler;
 
 describe('NotFoundHtmlRequestHandler', function () {
 
     beforeEach(function () {
 
-        $this->handler = new NotFoundHtmlRequestHandler;
+        $this->handler = new NotFoundHtmlRequestHandler(new Response);
 
     });
 

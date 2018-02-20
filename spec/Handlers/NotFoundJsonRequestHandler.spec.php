@@ -5,13 +5,15 @@ use function Eloquent\Phony\Kahlan\mock;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+use Zend\Diactoros\Response;
+
 use Ellipse\Http\Handlers\NotFoundJsonRequestHandler;
 
 describe('NotFoundJsonRequestHandler', function () {
 
     beforeEach(function () {
 
-        $this->handler = new NotFoundJsonRequestHandler;
+        $this->handler = new NotFoundJsonRequestHandler(new Response);
 
     });
 

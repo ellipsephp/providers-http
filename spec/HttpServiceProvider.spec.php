@@ -4,8 +4,6 @@ use Interop\Container\ServiceProviderInterface;
 
 use Ellipse\Container;
 use Ellipse\Http\HttpServiceProvider;
-use Ellipse\Http\HttpKernelFactory;
-use Ellipse\Http\DefaultHttpKernelFactory;
 use Ellipse\Http\Handlers\DefaultRequestHandler;
 
 describe('HttpServiceProvider', function () {
@@ -27,14 +25,6 @@ describe('HttpServiceProvider', function () {
         beforeEach(function () {
 
             $this->container = new Container([$this->provider]);
-
-        });
-
-        it('should provide an instance of DefaultHttpKernelFactory for the HttpKernelFactory::class alias', function () {
-
-            $test = $this->container->get(HttpKernelFactory::class);
-
-            expect($test)->toBeAnInstanceOf(DefaultHttpKernelFactory::class);
 
         });
 

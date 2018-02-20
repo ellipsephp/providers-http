@@ -2,26 +2,25 @@
 
 namespace Ellipse\Http\Handlers;
 
-use Negotiation\Negotiator;
+use Psr\Http\Message\ResponseInterface;
 
 class FallbackRequestHandler extends RequestBasedRequestHandler
 {
     /**
-     * Set up a fallback request handler with the given mediatype negotiator and
-     * debug status.
+     * Set up a fallback request handler with the given response prototype and
+     * debug mode.
      *
-     * @param \Negotiation\Negotiator   $negotiator
-     * @param bool                      $debug
+     * @param bool $debug
      */
-    public function __construct(Negotiator $negotiator, bool $debug)
+    public function __construct(ResponseInterface $prototype, bool $debug)
     {
-        parent::__construct($negotiator, [
+        parent::__construct([
             'text/html' => $debug
-                ? new NoticeHtmlRequestHandler
-                : new NotFoundHtmlRequestHandler,
+                ? new NoticeHtmlRequestHandler($prototype)
+                : new NotFoundHtmlRequestHandler($prototype),
             'application/json' => $debug
-                ? new NoticeJsonRequestHandler
-                : new NotFoundJsonRequestHandler,
+                ? new NoticeJsonRequestHandler($prototype)
+                : new NotFoundJsonRequestHandler($prototype),
         ]);
     }
 }

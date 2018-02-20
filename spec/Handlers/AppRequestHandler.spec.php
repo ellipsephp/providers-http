@@ -6,7 +6,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-use Ellipse\Http\AppRequestHandler;
+use Zend\Diactoros\Response;
+
+use Ellipse\Http\Handlers\AppRequestHandler;
 use Ellipse\Http\Exceptions\MiddlewareStackExhaustedException;
 
 describe('AppRequestHandler', function () {
@@ -14,12 +16,13 @@ describe('AppRequestHandler', function () {
     beforeEach(function () {
 
         $this->delegate = mock(RequestHandlerInterface::class);
+        $this->prototype = new Response;
 
     });
 
     it('should implement RequestHandlerInterface', function () {
 
-        $test = new AppRequestHandler($this->delegate->get(), false);
+        $test = new AppRequestHandler($this->delegate->get(), $this->prototype, false);
 
         expect($test)->toBeAnInstanceOf(RequestHandlerInterface::class);
 
@@ -37,7 +40,7 @@ describe('AppRequestHandler', function () {
 
             beforeEach(function () {
 
-                $this->handler = new AppRequestHandler($this->delegate->get(), false);
+                $this->handler = new AppRequestHandler($this->delegate->get(), $this->prototype, false);
 
             });
 
@@ -157,7 +160,7 @@ describe('AppRequestHandler', function () {
 
             beforeEach(function () {
 
-                $this->handler = new AppRequestHandler($this->delegate->get(), true);
+                $this->handler = new AppRequestHandler($this->delegate->get(), $this->prototype, true);
 
             });
 

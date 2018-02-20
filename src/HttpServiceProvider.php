@@ -17,7 +17,6 @@ class HttpServiceProvider implements ServiceProviderInterface
     public function getFactories()
     {
         return [
-            HttpKernelFactory::class => [$this, 'getHttpKernelFactory'],
             'ellipse.http.middleware' => [$this, 'getMiddleware'],
             'ellipse.http.handler' => [$this, 'getRequestHandler'],
         ];
@@ -28,17 +27,6 @@ class HttpServiceProvider implements ServiceProviderInterface
         return [
             DispatcherFactoryInterface::class => [$this, 'getDispatcherFactory'],
         ];
-    }
-
-    /**
-     * Return the default http kernel factory.
-     *
-     * @param \Psr\Container\ContainerInterface $container
-     * @return \Ellipse\Http\HttpKernelFactory
-     */
-    public function getHttpKernelFactory(ContainerInterface $container): HttpKernelFactory
-    {
-        return new DefaultHttpKernelFactory($container);
     }
 
     /**

@@ -6,15 +6,23 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+use Zend\Diactoros\Response;
+
 use Ellipse\Exceptions\ExceptionHandlerMiddleware;
 use Ellipse\Http\Middleware\FallbackResponseMiddleware;
 use Ellipse\Http\Exceptions\MiddlewareStackExhaustedException;
 
 describe('FallbackResponseMiddleware', function () {
 
+    beforeEach(function () {
+
+        $this->prototype = new Response;
+
+    });
+
     it('should extend ExceptionHandlerMiddleware', function () {
 
-        $test = new FallbackResponseMiddleware(false);
+        $test = new FallbackResponseMiddleware($this->prototype, false);
 
         expect($test)->toBeAnInstanceOf(ExceptionHandlerMiddleware::class);
 
@@ -33,7 +41,7 @@ describe('FallbackResponseMiddleware', function () {
 
             beforeEach(function () {
 
-                $this->middleware = new FallbackResponseMiddleware(false);
+                $this->middleware = new FallbackResponseMiddleware($this->prototype, false);
 
             });
 
@@ -153,7 +161,7 @@ describe('FallbackResponseMiddleware', function () {
 
             beforeEach(function () {
 
-                $this->middleware = new FallbackResponseMiddleware(true);
+                $this->middleware = new FallbackResponseMiddleware($this->prototype, true);
 
             });
 

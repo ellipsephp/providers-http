@@ -6,12 +6,27 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-use Zend\Diactoros\Response\JsonResponse;
-
 use Ellipse\Http\Exceptions\MiddlewareStackExhaustedException;
 
 class NoticeJsonRequestHandler implements RequestHandlerInterface
 {
+    /**
+     * The response prototype.
+     *
+     * @var \Psr\Http\Message\ResponseInterface
+     */
+    private $prototype;
+
+    /**
+     * Set up a notice json request handler with the given response prototype.
+     *
+     * @param \Psr\Http\Message\ResponseInterface $prototype
+     */
+    public function __construct(ResponseInterface $prototype)
+    {
+        $this->prototype = $prototype;
+    }
+
     /**
      * Return a notice json response.
      *
@@ -22,9 +37,15 @@ class NoticeJsonRequestHandler implements RequestHandlerInterface
     {
         $msg = "This is the default request handler. This means no middleware produced a response before hitting it.";
 
-        return new JsonResponse([
+        $contents = json_encode([
             'type' => MiddlewareStackExhaustedException::class,
             'message' => $msg,
-        ], 404);
+        ]);
+
+        $this->prototype->getBody()->write($contents);
+
+        return $this->prototype
+            ->withStatus(404)
+            ->withHeader('Content-type', 'application/json');
     }
 }

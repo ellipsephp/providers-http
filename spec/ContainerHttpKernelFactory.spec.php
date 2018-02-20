@@ -4,24 +4,25 @@ use function Eloquent\Phony\Kahlan\mock;
 
 use Psr\Container\ContainerInterface;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 use Ellipse\Dispatcher;
 use Ellipse\DispatcherFactoryInterface;
-use Ellipse\Http\AppRequestHandler;
 use Ellipse\Http\HttpKernelFactory;
-use Ellipse\Http\DefaultHttpKernelFactory;
+use Ellipse\Http\ContainerHttpKernelFactory;
 use Ellipse\Http\HttpKernelWithBootFailure;
 use Ellipse\Http\HttpKernelWithoutBootFailure;
+use Ellipse\Http\Handlers\AppRequestHandler;
 
-describe('DefaultHttpKernelFactory', function () {
+describe('ContainerHttpKernelFactory', function () {
 
     beforeEach(function () {
 
         $this->container = mock(ContainerInterface::class);
 
-        $this->factory = new DefaultHttpKernelFactory($this->container->get());
+        $this->factory = new ContainerHttpKernelFactory($this->container->get());
 
     });
 
@@ -33,19 +34,25 @@ describe('DefaultHttpKernelFactory', function () {
 
     describe('->__invoke()', function () {
 
+        beforeEach(function () {
+
+            $this->middleware = [mock(MiddlewareInterface::class)->get()];
+            $this->handler = mock(RequestHandlerInterface::class)->get();
+            $this->dfactory = mock(DispatcherFactoryInterface::class);
+            $this->dispatcher = mock(Dispatcher::class)->get();
+            $this->prototype = mock(ResponseInterface::class)->get();
+
+            $this->container->get->with(DispatcherFactoryInterface::class)->returns($this->dfactory);
+            $this->container->get->with('ellipse.http.middleware')->returns($this->middleware);
+            $this->container->get->with('ellipse.http.handler')->returns($this->handler);
+
+        });
+
         context('when the container does not throw an exception', function () {
 
             beforeEach(function () {
 
-                $factory = mock(DispatcherFactoryInterface::class);
-                $middleware = [mock(MiddlewareInterface::class)->get()];
-                $handler = mock(RequestHandlerInterface::class)->get();
-                $this->dispatcher = mock(Dispatcher::class)->get();
-
-                $this->container->get->with(DispatcherFactoryInterface::class)->returns($factory);
-                $this->container->get->with('ellipse.http.middleware')->returns($middleware);
-                $this->container->get->with('ellipse.http.handler')->returns($handler);
-                $factory->__invoke->with($handler, $middleware)->returns($this->dispatcher);
+                $this->dfactory->__invoke->with($this->handler, $this->middleware)->returns($this->dispatcher);
 
             });
 
@@ -53,10 +60,12 @@ describe('DefaultHttpKernelFactory', function () {
 
                 it('should return a HttpKernelWithoutBootFailure wrapped around the produced AppRequestHandler with debug mode to false', function () {
 
-                    $test = ($this->factory)('env', false);
+                    $test = ($this->factory)($this->prototype, 'env', false);
 
                     $kernel = new HttpKernelWithoutBootFailure(
-                        new AppRequestHandler($this->dispatcher, false), false
+                        new AppRequestHandler($this->dispatcher, $this->prototype, false),
+                        $this->prototype,
+                        false
                     );
 
                     expect($test)->toEqual($kernel);
@@ -69,10 +78,12 @@ describe('DefaultHttpKernelFactory', function () {
 
                 it('should return a HttpKernelWithoutBootFailure wrapped around the produced AppRequestHandler with debug mode to true', function () {
 
-                    $test = ($this->factory)('env', true);
+                    $test = ($this->factory)($this->prototype, 'env', true);
 
                     $kernel = new HttpKernelWithoutBootFailure(
-                        new AppRequestHandler($this->dispatcher, true), true
+                        new AppRequestHandler($this->dispatcher, $this->prototype, true),
+                        $this->prototype,
+                        true
                     );
 
                     expect($test)->toEqual($kernel);
@@ -87,15 +98,9 @@ describe('DefaultHttpKernelFactory', function () {
 
             beforeEach(function () {
 
-                $factory = mock(DispatcherFactoryInterface::class);
-                $middleware = [mock(MiddlewareInterface::class)->get()];
-                $handler = mock(RequestHandlerInterface::class)->get();
                 $this->exception = mock(Throwable::class)->get();
 
-                $this->container->get->with(DispatcherFactoryInterface::class)->returns($factory);
-                $this->container->get->with('ellipse.http.middleware')->returns($middleware);
-                $this->container->get->with('ellipse.http.handler')->returns($handler);
-                $factory->__invoke->with($handler, $middleware)->throws($this->exception);
+                $this->dfactory->__invoke->with($this->handler, $this->middleware)->throws($this->exception);
 
             });
 
@@ -103,9 +108,9 @@ describe('DefaultHttpKernelFactory', function () {
 
                 it('should return a HttpKernelWithBootFailure wrapped around the exception with debug mode to false', function () {
 
-                    $test = ($this->factory)('env', false);
+                    $test = ($this->factory)($this->prototype, 'env', false);
 
-                    $kernel = new HttpKernelWithBootFailure($this->exception, false);
+                    $kernel = new HttpKernelWithBootFailure($this->exception, $this->prototype, false);
 
                     expect($test)->toEqual($kernel);
 
@@ -117,9 +122,9 @@ describe('DefaultHttpKernelFactory', function () {
 
                 it('should return a HttpKernelWithBootFailure wrapped around the exception with debug mode to true', function () {
 
-                    $test = ($this->factory)('env', true);
+                    $test = ($this->factory)($this->prototype, 'env', true);
 
-                    $kernel = new HttpKernelWithBootFailure($this->exception, true);
+                    $kernel = new HttpKernelWithBootFailure($this->exception, $this->prototype, true);
 
                     expect($test)->toEqual($kernel);
 

@@ -4,7 +4,7 @@ namespace Ellipse\Http;
 
 use Psr\Container\ContainerInterface;
 
-class DefaultHttpKernelFactory extends HttpKernelFactory
+class ContainerHttpKernelFactory extends HttpKernelFactory
 {
     /**
      * Set up a default http kernel factory using the given application

@@ -2,10 +2,17 @@
 
 namespace Ellipse\Http\Handlers;
 
-use Negotiation\Negotiator;
+use Psr\Http\Message\ResponseInterface;
 
-class FallbackRequestHandlerFactory extends RequestBasedRequestHandler
+class FallbackRequestHandlerFactory
 {
+    /**
+     * The response prototype.
+     *
+     * @var \Psr\Http\Message\ResponseInterface
+     */
+    private $prototype;
+
     /**
      * Whether the application is in debug mode or not.
      *
@@ -14,12 +21,15 @@ class FallbackRequestHandlerFactory extends RequestBasedRequestHandler
     private $debug;
 
     /**
-     * Set up a fallback request handler factory with the given debug status.
+     * Set up a fallback request handler factory with the given response
+     * prototype and debug mode.
      *
-     * @param bool $debug
+     * @param \Psr\Http\Message\ResponseInterface   $prototype
+     * @param bool                                  $debug
      */
-    public function __construct(bool $debug)
+    public function __construct(ResponseInterface $prototype, bool $debug)
     {
+        $this->prototype = $prototype;
         $this->debug = $debug;
     }
 
@@ -30,8 +40,6 @@ class FallbackRequestHandlerFactory extends RequestBasedRequestHandler
      */
     public function __invoke(): FallbackRequestHandler
     {
-        $negotiator = new Negotiator;
-
-        return new FallbackRequestHandler($negotiator, $this->debug);
+        return new FallbackRequestHandler($this->prototype, $this->debug);
     }
 }

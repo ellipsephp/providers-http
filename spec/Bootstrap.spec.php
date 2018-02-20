@@ -4,13 +4,14 @@ use function Eloquent\Phony\Kahlan\mock;
 
 use Psr\Container\ContainerInterface;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 use Ellipse\Dispatcher;
 use Ellipse\DispatcherFactoryInterface;
 use Ellipse\Http\Bootstrap;
-use Ellipse\Http\AppRequestHandler;
+use Ellipse\Http\Handlers\AppRequestHandler;
 
 describe('Bootstrap', function () {
 
@@ -30,6 +31,7 @@ describe('Bootstrap', function () {
             $middleware = [mock(MiddlewareInterface::class)->get()];
             $handler = mock(RequestHandlerInterface::class)->get();
             $this->dispatcher = mock(Dispatcher::class)->get();
+            $this->prototype = mock(ResponseInterface::class)->get();
 
             $this->container->get->with(DispatcherFactoryInterface::class)->returns($factory);
             $this->container->get->with('ellipse.http.middleware')->returns($middleware);
@@ -42,9 +44,9 @@ describe('Bootstrap', function () {
 
             it('should return an AppRequestHandler wrapped around a dispatcher built from the container and the debug mode set to false', function () {
 
-                $test = ($this->bootstrap)('env', false);
+                $test = ($this->bootstrap)($this->prototype, 'env', false);
 
-                $handler = new AppRequestHandler($this->dispatcher, false);
+                $handler = new AppRequestHandler($this->dispatcher, $this->prototype, false);
 
                 expect($test)->toEqual($handler);
 
@@ -56,9 +58,9 @@ describe('Bootstrap', function () {
 
             it('should return an AppRequestHandler wrapped around a dispatcher built from the container and the debug mode set to true', function () {
 
-                $test = ($this->bootstrap)('env', true);
+                $test = ($this->bootstrap)($this->prototype, 'env', true);
 
-                $handler = new AppRequestHandler($this->dispatcher, true);
+                $handler = new AppRequestHandler($this->dispatcher, $this->prototype, true);
 
                 expect($test)->toEqual($handler);
 

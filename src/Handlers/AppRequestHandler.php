@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Ellipse\Http;
+namespace Ellipse\Http\Handlers;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 use Ellipse\Dispatcher\RequestHandlerWithMiddlewareStack;
@@ -9,8 +10,8 @@ use Ellipse\Http\Middleware\FallbackResponseMiddleware;
 
 class AppRequestHandler extends RequestHandlerWithMiddlewareStack
 {
-    public function __construct(RequestHandlerInterface $handler, bool $debug)
+    public function __construct(RequestHandlerInterface $handler, ResponseInterface $prototype, bool $debug)
     {
-        parent::__construct($handler, [new FallbackResponseMiddleware($debug)]);
+        parent::__construct($handler, [new FallbackResponseMiddleware($prototype, $debug)]);
     }
 }

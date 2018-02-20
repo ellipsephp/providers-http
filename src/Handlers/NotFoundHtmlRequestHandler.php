@@ -8,10 +8,26 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 use League\Plates\Engine;
 
-use Zend\Diactoros\Response\HtmlResponse;
-
 class NotFoundHtmlRequestHandler implements RequestHandlerInterface
 {
+    /**
+     * The response prototype.
+     *
+     * @var \Psr\Http\Message\ResponseInterface
+     */
+    private $prototype;
+
+    /**
+     * Set up a not found html request handler with the given response
+     * prototype.
+     *
+     * @param \Psr\Http\Message\ResponseInterface $prototype
+     */
+    public function __construct(ResponseInterface $prototype)
+    {
+        $this->prototype = $prototype;
+    }
+
     /**
      * Return a not found html response.
      *
@@ -24,8 +40,12 @@ class NotFoundHtmlRequestHandler implements RequestHandlerInterface
 
         $engine = new Engine($path);
 
-        $html = $engine->render('notfound');
+        $contents = $engine->render('notfound');
 
-        return new HtmlResponse($html, 404);
+        $this->prototype->getBody()->write($contents);
+
+        return $this->prototype
+            ->withStatus(404)
+            ->withHeader('Content-type', 'text/html');
     }
 }

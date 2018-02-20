@@ -6,10 +6,26 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-use Zend\Diactoros\Response\JsonResponse;
-
 class NotFoundJsonRequestHandler implements RequestHandlerInterface
 {
+    /**
+     * The response prototype.
+     *
+     * @var \Psr\Http\Message\ResponseInterface
+     */
+    private $prototype;
+
+    /**
+     * Set up a not found json request handler with the given response
+     * prototype.
+     *
+     * @param \Psr\Http\Message\ResponseInterface $prototype
+     */
+    public function __construct(ResponseInterface $prototype)
+    {
+        $this->prototype = $prototype;
+    }
+
     /**
      * Return a not found json response.
      *
@@ -18,6 +34,12 @@ class NotFoundJsonRequestHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return new JsonResponse(['message' => 'Not found'], 404);
+        $contents = json_encode(['message' => 'Not found']);
+
+        $this->prototype->getBody()->write($contents);
+
+        return $this->prototype
+            ->withStatus(404)
+            ->withHeader('Content-type', 'application/json');
     }
 }

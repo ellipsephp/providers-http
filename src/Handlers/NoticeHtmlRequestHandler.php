@@ -8,10 +8,25 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 use League\Plates\Engine;
 
-use Zend\Diactoros\Response\HtmlResponse;
-
 class NoticeHtmlRequestHandler implements RequestHandlerInterface
 {
+    /**
+     * The response prototype.
+     *
+     * @var \Psr\Http\Message\ResponseInterface
+     */
+    private $prototype;
+
+    /**
+     * Set up a notice html request handler with the given response prototype.
+     *
+     * @param \Psr\Http\Message\ResponseInterface $prototype
+     */
+    public function __construct(ResponseInterface $prototype)
+    {
+        $this->prototype = $prototype;
+    }
+
     /**
      * Return a notice html response.
      *
@@ -24,8 +39,12 @@ class NoticeHtmlRequestHandler implements RequestHandlerInterface
 
         $engine = new Engine($path);
 
-        $html = $engine->render('notice');
+        $contents = $engine->render('notice');
 
-        return new HtmlResponse($html, 404);
+        $this->prototype->getBody()->write($contents);
+
+        return $this->prototype
+            ->withStatus(404)
+            ->withHeader('Content-type', 'text/html');
     }
 }

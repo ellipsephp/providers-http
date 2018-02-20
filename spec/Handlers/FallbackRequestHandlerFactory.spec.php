@@ -2,7 +2,7 @@
 
 use function Eloquent\Phony\Kahlan\mock;
 
-use Negotiation\Negotiator;
+use Psr\Http\Message\ResponseInterface;
 
 use Ellipse\Http\Handlers\FallbackRequestHandler;
 use Ellipse\Http\Handlers\FallbackRequestHandlerFactory;
@@ -12,7 +12,7 @@ describe('FallbackRequestHandlerFactory', function () {
 
     beforeEach(function () {
 
-        $this->negotiator = new Negotiator;
+        $this->prototype = mock(ResponseInterface::class)->get();
 
     });
 
@@ -22,11 +22,11 @@ describe('FallbackRequestHandlerFactory', function () {
 
             it('should return a fallback request handler with debug value set to false', function () {
 
-                $factory = new FallbackRequestHandlerFactory(false);
+                $factory = new FallbackRequestHandlerFactory($this->prototype, false);
 
                 $test = $factory(new MiddlewareStackExhaustedException);
 
-                $handler = new FallbackRequestHandler($this->negotiator, false);
+                $handler = new FallbackRequestHandler($this->prototype, false);
 
                 expect($test)->toEqual($handler);
 
@@ -38,11 +38,11 @@ describe('FallbackRequestHandlerFactory', function () {
 
             it('should return a fallback request handler with debug value set to true', function () {
 
-                $factory = new FallbackRequestHandlerFactory(true);
+                $factory = new FallbackRequestHandlerFactory($this->prototype, (true));
 
                 $test = $factory(new MiddlewareStackExhaustedException);
 
-                $handler = new FallbackRequestHandler($this->negotiator, true);
+                $handler = new FallbackRequestHandler($this->prototype, true);
 
                 expect($test)->toEqual($handler);
 
