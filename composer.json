@@ -27,7 +27,7 @@
         "league/plates": "^3.3",
         "ellipse/providers": "^0.2",
         "ellipse/providers-installer": "^0.3",
-        "ellipse/http": "^0.6",
+        "ellipse/http": "^0.7",
         "ellipse/dispatcher": "^1.2"
     },
     "require-dev": {
