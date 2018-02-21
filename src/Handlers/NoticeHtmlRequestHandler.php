@@ -8,23 +8,25 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 use League\Plates\Engine;
 
+use Interop\Http\Factory\ResponseFactoryInterface;
+
 class NoticeHtmlRequestHandler implements RequestHandlerInterface
 {
     /**
-     * The response prototype.
+     * The response factory.
      *
-     * @var \Psr\Http\Message\ResponseInterface
+     * @var \Interop\Http\Factory\ResponseFactoryInterface
      */
-    private $prototype;
+    private $factory;
 
     /**
-     * Set up a notice html request handler with the given response prototype.
+     * Set up a notice html request handler with the given response factory.
      *
-     * @param \Psr\Http\Message\ResponseInterface $prototype
+     * @param \Interop\Http\Factory\ResponseFactoryInterface $factory
      */
-    public function __construct(ResponseInterface $prototype)
+    public function __construct(ResponseFactoryInterface $factory)
     {
-        $this->prototype = $prototype;
+        $this->factory = $factory;
     }
 
     /**
@@ -41,10 +43,12 @@ class NoticeHtmlRequestHandler implements RequestHandlerInterface
 
         $contents = $engine->render('notice');
 
-        $this->prototype->getBody()->write($contents);
-
-        return $this->prototype
-            ->withStatus(404)
+        $response = $this->factory
+            ->createResponse(404)
             ->withHeader('Content-type', 'text/html');
+
+        $response->getBody()->write($contents);
+
+        return $response;
     }
 }

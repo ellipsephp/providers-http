@@ -2,16 +2,24 @@
 
 namespace Ellipse\Http\Handlers;
 
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+
+use Interop\Http\Factory\ResponseFactoryInterface;
 
 use Ellipse\Dispatcher\RequestHandlerWithMiddlewareStack;
 use Ellipse\Http\Middleware\FallbackResponseMiddleware;
 
 class AppRequestHandler extends RequestHandlerWithMiddlewareStack
 {
-    public function __construct(RequestHandlerInterface $handler, ResponseInterface $prototype, bool $debug)
+    /**
+     * Set up an app request handler with the given requets handler and response
+     * factory.
+     *
+     * @param \Psr\Http\Server\RequestHandlerInterface          $handler
+     * @param \Interop\Http\Factory\ResponseFactoryInterface    $factory
+     */
+    public function __construct(RequestHandlerInterface $handler, ResponseFactoryInterface $factory, bool $debug)
     {
-        parent::__construct($handler, [new FallbackResponseMiddleware($prototype, $debug)]);
+        parent::__construct($handler, [new FallbackResponseMiddleware($factory, $debug)]);
     }
 }

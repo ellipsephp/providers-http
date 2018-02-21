@@ -2,16 +2,16 @@
 
 namespace Ellipse\Http\Handlers;
 
-use Psr\Http\Message\ResponseInterface;
+use Interop\Http\Factory\ResponseFactoryInterface;
 
 class FallbackRequestHandlerFactory
 {
     /**
-     * The response prototype.
+     * The response factory.
      *
-     * @var \Psr\Http\Message\ResponseInterface
+     * @var \Interop\Http\Factory\ResponseFactoryInterface
      */
-    private $prototype;
+    private $factory;
 
     /**
      * Whether the application is in debug mode or not.
@@ -21,15 +21,15 @@ class FallbackRequestHandlerFactory
     private $debug;
 
     /**
-     * Set up a fallback request handler factory with the given response
-     * prototype and debug mode.
+     * Set up a fallback request handler factory with the given response factory
+     * and debug mode.
      *
-     * @param \Psr\Http\Message\ResponseInterface   $prototype
-     * @param bool                                  $debug
+     * @param \Interop\Http\Factory\ResponseFactoryInterface    $factory
+     * @param bool                                              $debug
      */
-    public function __construct(ResponseInterface $prototype, bool $debug)
+    public function __construct(ResponseFactoryInterface $factory, bool $debug)
     {
-        $this->prototype = $prototype;
+        $this->factory = $factory;
         $this->debug = $debug;
     }
 
@@ -40,6 +40,6 @@ class FallbackRequestHandlerFactory
      */
     public function __invoke(): FallbackRequestHandler
     {
-        return new FallbackRequestHandler($this->prototype, $this->debug);
+        return new FallbackRequestHandler($this->factory, $this->debug);
     }
 }

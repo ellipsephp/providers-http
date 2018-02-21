@@ -24,16 +24,17 @@
         "container-interop/service-provider": "^0.4.0",
         "psr/container": "^1.0",
         "psr/http-server-handler": "^1.0",
+        "http-interop/http-factory": "^0.3.0",
         "league/plates": "^3.3",
         "ellipse/providers": "^0.2",
         "ellipse/providers-installer": "^0.3",
-        "ellipse/http": "^0.7",
+        "ellipse/http": "^0.8",
         "ellipse/dispatcher": "^1.2"
     },
     "require-dev": {
         "kahlan/kahlan": "^4.0",
         "eloquent/phony-kahlan": "^1.0",
-        "zendframework/zend-diactoros": "^1.6",
+        "http-interop/http-factory-diactoros": "^0.3.0",
         "ellipse/container": "^0.4"
     },
     "autoload": {

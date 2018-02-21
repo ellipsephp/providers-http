@@ -2,25 +2,26 @@
 
 namespace Ellipse\Http\Handlers;
 
-use Psr\Http\Message\ResponseInterface;
+use Interop\Http\Factory\ResponseFactoryInterface;
 
 class FallbackRequestHandler extends RequestBasedRequestHandler
 {
     /**
-     * Set up a fallback request handler with the given response prototype and
+     * Set up a fallback request handler with the given response factory and
      * debug mode.
      *
-     * @param bool $debug
+     * @param \Interop\Http\Factory\ResponseFactoryInterface    $factory
+     * @param bool                                              $debug
      */
-    public function __construct(ResponseInterface $prototype, bool $debug)
+    public function __construct(ResponseFactoryInterface $factory, bool $debug)
     {
         parent::__construct([
             'text/html' => $debug
-                ? new NoticeHtmlRequestHandler($prototype)
-                : new NotFoundHtmlRequestHandler($prototype),
+                ? new NoticeHtmlRequestHandler($factory)
+                : new NotFoundHtmlRequestHandler($factory),
             'application/json' => $debug
-                ? new NoticeJsonRequestHandler($prototype)
-                : new NotFoundJsonRequestHandler($prototype),
+                ? new NoticeJsonRequestHandler($factory)
+                : new NotFoundJsonRequestHandler($factory),
         ]);
     }
 }

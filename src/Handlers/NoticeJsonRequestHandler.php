@@ -6,25 +6,27 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+use Interop\Http\Factory\ResponseFactoryInterface;
+
 use Ellipse\Http\Exceptions\MiddlewareStackExhaustedException;
 
 class NoticeJsonRequestHandler implements RequestHandlerInterface
 {
     /**
-     * The response prototype.
+     * The response factory.
      *
-     * @var \Psr\Http\Message\ResponseInterface
+     * @var \Interop\Http\Factory\ResponseFactoryInterface
      */
-    private $prototype;
+    private $factory;
 
     /**
-     * Set up a notice json request handler with the given response prototype.
+     * Set up a notice json request handler with the given response factory.
      *
-     * @param \Psr\Http\Message\ResponseInterface $prototype
+     * @param \Interop\Http\Factory\ResponseFactoryInterface $factory
      */
-    public function __construct(ResponseInterface $prototype)
+    public function __construct(ResponseFactoryInterface $factory)
     {
-        $this->prototype = $prototype;
+        $this->factory = $factory;
     }
 
     /**
@@ -42,10 +44,12 @@ class NoticeJsonRequestHandler implements RequestHandlerInterface
             'message' => $msg,
         ]);
 
-        $this->prototype->getBody()->write($contents);
-
-        return $this->prototype
-            ->withStatus(404)
+        $response = $this->factory
+            ->createResponse(404)
             ->withHeader('Content-type', 'application/json');
+
+        $response->getBody()->write($contents);
+
+        return $response;
     }
 }

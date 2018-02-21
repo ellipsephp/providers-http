@@ -5,7 +5,7 @@ use function Eloquent\Phony\Kahlan\mock;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-use Zend\Diactoros\Response;
+use Http\Factory\Diactoros\ResponseFactory;
 
 use Ellipse\Http\Handlers\FallbackRequestHandler;
 use Ellipse\Http\Handlers\RequestBasedRequestHandler;
@@ -15,13 +15,13 @@ describe('FallbackRequestHandler', function () {
 
     beforeEach(function () {
 
-        $this->prototype = new Response;
+        $this->factory = new ResponseFactory;
 
     });
 
     it('should extend RequestBasedRequestHandler', function () {
 
-        $test = new FallbackRequestHandler($this->prototype, false);
+        $test = new FallbackRequestHandler($this->factory, false);
 
         expect($test)->toBeAnInstanceOf(RequestBasedRequestHandler::class);
 
@@ -39,7 +39,7 @@ describe('FallbackRequestHandler', function () {
 
             beforeEach(function () {
 
-                $this->handler = new FallbackRequestHandler($this->prototype, false);
+                $this->handler = new FallbackRequestHandler($this->factory, false);
 
             });
 
@@ -107,7 +107,7 @@ describe('FallbackRequestHandler', function () {
 
             beforeEach(function () {
 
-                $this->handler = new FallbackRequestHandler($this->prototype, true);
+                $this->handler = new FallbackRequestHandler($this->factory, true);
 
             });
 

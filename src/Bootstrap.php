@@ -4,7 +4,7 @@ namespace Ellipse\Http;
 
 use Psr\Container\ContainerInterface;
 
-use Psr\Http\Message\ResponseInterface;
+use Interop\Http\Factory\ResponseFactoryInterface;
 
 use Ellipse\DispatcherFactoryInterface;
 use Ellipse\Http\Handlers\AppRequestHandler;
@@ -32,17 +32,17 @@ class Bootstrap
      * Return an AppRequestHandler wrapped around a dispatcher built with the
      * application container.
      *
-     * @param \Psr\Http\Message\ResponseInterface   $prototype
-     * @param string                                $env
-     * @param bool                                  $debug
+     * @param \Psr\Http\Message\ResponseFactoryInterface    $factory
+     * @param string                                        $env
+     * @param bool                                          $debug
      * @return \Ellipse\Http\Handlers\AppRequestHandler
      */
-    public function __invoke(ResponseInterface $prototype, string $env, bool $debug): AppRequestHandler
+    public function __invoke(ResponseFactoryInterface $factory, string $env, bool $debug): AppRequestHandler
     {
-        $factory = $this->container->get(DispatcherFactoryInterface::class);
+        $dispatcher = $this->container->get(DispatcherFactoryInterface::class);
         $middleware = $this->container->get('ellipse.http.middleware');
         $handler = $this->container->get('ellipse.http.handler');
 
-        return new AppRequestHandler($factory($handler, $middleware), $prototype, $debug);
+        return new AppRequestHandler($dispatcher($handler, $middleware), $factory, $debug);
     }
 }
