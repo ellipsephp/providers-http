@@ -27,7 +27,7 @@
         "http-interop/http-factory": "^0.3.0",
         "league/plates": "^3.3",
         "ellipse/providers": "^0.2",
-        "ellipse/providers-installer": "^0.3",
+        "ellipse/providers-installer": "^0.4",
         "ellipse/http": "^0.8",
         "ellipse/handlers": "^1.0",
         "ellipse/dispatcher": "^1.3"
