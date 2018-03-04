@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.0",
         "container-interop/service-provider": "^0.4.0",
         "psr/container": "^1.0",
         "psr/http-server-handler": "^1.0",
@@ -30,7 +30,7 @@
         "ellipse/providers-installer": "^0.4",
         "ellipse/http": "^0.8",
         "ellipse/handlers": "^1.0",
-        "ellipse/dispatcher": "^1.3"
+        "ellipse/dispatcher": "^1.4"
     },
     "require-dev": {
         "kahlan/kahlan": "^4.0",

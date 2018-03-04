@@ -33,9 +33,9 @@ class HttpServiceProvider implements ServiceProviderInterface
      * Return an empty array as middleware. End user can extend it.
      *
      * @param \Psr\Container\ContainerInterface $container
-     * @return iterable
+     * @return array
      */
-    public function getMiddleware(ContainerInterface $container): iterable
+    public function getMiddleware(ContainerInterface $container): array
     {
         return [];
     }

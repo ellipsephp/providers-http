@@ -11,7 +11,7 @@ return [
          * The list of Psr-15 middleware used by the http kernel. An empty array
          * of middleware is provided by default.
          */
-        'ellipse.http.middleware' => function ($container, iterable $middleware): iterable {
+        'ellipse.http.middleware' => function ($container, array $middleware): array {
 
             return $middleware;
 
