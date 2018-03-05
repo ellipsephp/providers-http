@@ -1,7 +1,8 @@
 <?php
 
+use Psr\Http\Server\RequestHandlerInterface;
+
 use Ellipse\Container;
-use Ellipse\Http\Handlers\DefaultRequestHandler;
 
 describe('providers.php', function () {
 
@@ -19,19 +20,19 @@ describe('providers.php', function () {
 
         });
 
-        it('should provide an empty array for the ellipse.http.middleware alias', function () {
+        it('should provide an array for the ellipse.http.middleware alias', function () {
 
             $test = $this->container->get('ellipse.http.middleware');
 
-            expect($test)->toEqual([]);
+            expect($test)->toBeAn('array');
 
         });
 
-        it('should provide an instance of DefaultRequestHandler for the ellipse.http.handler alias', function () {
+        it('should provide an implementation of RequestHandlerInterface for the ellipse.http.handler alias', function () {
 
             $test = $this->container->get('ellipse.http.handler');
 
-            expect($test)->toBeAnInstanceOf(DefaultRequestHandler::class);
+            expect($test)->toBeAnInstanceOf(RequestHandlerInterface::class);
 
         });
 

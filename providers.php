@@ -2,10 +2,10 @@
 
 use Psr\Http\Server\RequestHandlerInterface;
 
-use Ellipse\Http\ExtendedHttpServiceProvider;
+use Ellipse\Http\HttpServiceProvider;
 
 return [
-    new ExtendedHttpServiceProvider([
+    new HttpServiceProvider([
 
         /**
          * The list of Psr-15 middleware used by the http kernel. An empty array

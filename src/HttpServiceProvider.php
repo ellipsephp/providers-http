@@ -8,12 +8,30 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 use Interop\Container\ServiceProviderInterface;
 
-use Ellipse\DispatcherFactory;
-use Ellipse\DispatcherFactoryInterface;
 use Ellipse\Http\Handlers\DefaultRequestHandler;
 
 class HttpServiceProvider implements ServiceProviderInterface
 {
+    /**
+     * The user defined service extensions.
+     *
+     * @var array
+     */
+    private $extensions;
+
+    /**
+     * Set up a http service provider with the given extensions.
+     *
+     * @param array $extensions
+     */
+    public function __construct(array $extensions = [])
+    {
+        $this->extensions = $extensions;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getFactories()
     {
         return [
@@ -22,15 +40,16 @@ class HttpServiceProvider implements ServiceProviderInterface
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getExtensions()
     {
-        return [
-            DispatcherFactoryInterface::class => [$this, 'getDispatcherFactory'],
-        ];
+        return $this->extensions;
     }
 
     /**
-     * Return an empty array as middleware. End user can extend it.
+     * Return an empty array as middleware queue.
      *
      * @param \Psr\Container\ContainerInterface $container
      * @return array
@@ -41,7 +60,7 @@ class HttpServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * Return a default request handler. End user can extend it.
+     * Return a default request handler as final request handler.
      *
      * @param \Psr\Container\ContainerInterface $container
      * @return \Psr\Http\Server\RequestHandlerInterface
@@ -49,23 +68,5 @@ class HttpServiceProvider implements ServiceProviderInterface
     public function getRequestHandler(ContainerInterface $container): RequestHandlerInterface
     {
         return new DefaultRequestHandler;
-    }
-
-    /**
-     * Return a default dispatcher factory when none defined.
-     *
-     * @param \Psr\Container\ContainerInterface     $container
-     * @param \Ellipse\DispatcherFactoryInterface   $factory
-     * @return \Ellipse\DispatcherFactoryInterface
-     */
-    public function getDispatcherFactory(ContainerInterface $container, DispatcherFactoryInterface $factory = null): DispatcherFactoryInterface
-    {
-        if (is_null($factory)) {
-
-            return new DispatcherFactory;
-
-        }
-
-        return $factory;
     }
 }

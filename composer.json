@@ -26,11 +26,10 @@
         "psr/http-server-handler": "^1.0",
         "http-interop/http-factory": "^0.3.0",
         "league/plates": "^3.3",
-        "ellipse/providers": "^0.2",
-        "ellipse/providers-installer": "^0.4",
+        "services/installer": "^0.5",
         "ellipse/http": "^0.8",
         "ellipse/handlers": "^1.0",
-        "ellipse/dispatcher": "^1.4"
+        "ellipse/providers-dispatcher": "^0.4.0"
     },
     "require-dev": {
         "kahlan/kahlan": "^4.0",
