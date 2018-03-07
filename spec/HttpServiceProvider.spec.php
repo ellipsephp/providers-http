@@ -28,7 +28,7 @@ describe('HttpServiceProvider', function () {
 
         });
 
-        it('should provide an empty array for the ellipse.http.middleware alias', function () {
+        it('should provide an empty array for the ellipse.http.middleware id', function () {
 
             $test = $this->container->get('ellipse.http.middleware');
 
@@ -36,7 +36,7 @@ describe('HttpServiceProvider', function () {
 
         });
 
-        it('should provide an instance of DefaultRequestHandler for the ellipse.http.handler alias', function () {
+        it('should provide an instance of DefaultRequestHandler for the ellipse.http.handler id', function () {
 
             $test = $this->container->get('ellipse.http.handler');
 

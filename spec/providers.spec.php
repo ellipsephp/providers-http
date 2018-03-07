@@ -20,7 +20,7 @@ describe('providers.php', function () {
 
         });
 
-        it('should provide an array for the ellipse.http.middleware alias', function () {
+        it('should provide an array for the ellipse.http.middleware id', function () {
 
             $test = $this->container->get('ellipse.http.middleware');
 
@@ -28,7 +28,7 @@ describe('providers.php', function () {
 
         });
 
-        it('should provide an implementation of RequestHandlerInterface for the ellipse.http.handler alias', function () {
+        it('should provide an implementation of RequestHandlerInterface for the ellipse.http.handler id', function () {
 
             $test = $this->container->get('ellipse.http.handler');
 
